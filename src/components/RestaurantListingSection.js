@@ -2,38 +2,22 @@ import React, { Fragment, useState } from "react";
 import { Button, Grid } from "@mui/material";
 import RestaurantCards from "./RestaurantCards";
 import RestaurantFormField from "./RestaurantFormField";
-import { useId } from "react-id-generator";
+import { v4 as uuidv4 } from 'uuid';
 
 function RestaurantListingSection() {
-  const [restaurantId] = useId();
   const [openDialog, setOpenDialog] = useState(false);
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurantCuisine, setRestaurantCuisine] = useState("");
   const [restaurantLocation, setRestaurantLocation] = useState("");
   const [restaurantComment, setRestaurantComment] = useState("");
-  const [restaurants, setRestaurants] = useState([
-    {
-      id: restaurantId,
-      name: "Restaurant A",
-      cuisine: "Western",
-      location: "Damansara Utama",
-      comment: "A bit pricey.",
-    },
-    {
-      id: restaurantId,
-      name: "Restaurant B",
-      cuisine: "Japanese",
-      location: "Bandar Utama",
-      comment: "Portion too small.",
-    },
-    {
-      id: restaurantId,
-      name: "Restaurant C",
-      cuisine: "Malay",
-      location: "TTDI",
-      comment: "Not much variety.",
-    },
-  ]);
+  const [restaurant, setRestaurant] = useState({
+    id: "",
+    name: "",
+    cuisine: "",
+    location: "",
+    comment: "",
+  });
+  const [restaurants, setRestaurants] = useState([]);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -44,28 +28,36 @@ function RestaurantListingSection() {
   };
 
   const handleAddRestaurant = () => {
+    setRestaurants([...restaurants, restaurant])
     setOpenDialog(false);
   };
 
   const onChangeRestaurantName = (e) => {
     const name = e.target.value;
-    setRestaurantName(name);
+    setRestaurant({...restaurant, name: name})
+    // setRestaurantName(name);
+  };
+  
+  const onChangeRestaurantCuisine = (e) => {
+    const cuisine = e.target.value;
+    setRestaurant({...restaurant, cuisine: cuisine})
+    // setRestaurantCuisine(cuisine);
   };
 
   const onChangeRestaurantLocation = (e) => {
     const location = e.target.value;
-    setRestaurantLocation(location);
+    setRestaurant({...restaurant, location: location})
+    // setRestaurantLocation(location);
   };
-
+  
   const onChangeRestaurantComment = (e) => {
     const comment = e.target.value;
-    setRestaurantComment(comment);
+    setRestaurant({...restaurant, comment: comment})
+    // setRestaurantComment(comment);
   };
 
-  const onChangeRestaurantCuisine = (e) => {
-    const cuisine = e.target.value;
-    setRestaurantCuisine(cuisine);
-  };
+  // console.log("restaurant:", restaurant)
+  // console.log("restaurants:", restaurants)
 
   return (
     <Fragment>
@@ -79,7 +71,7 @@ function RestaurantListingSection() {
         openDialog={openDialog}
         onChangeRestaurantName={onChangeRestaurantName}
         onChangeRestaurantLocation={onChangeRestaurantLocation}
-        onChangeRestaurantRating={onChangeRestaurantComment}
+        onChangeRestaurantComment={onChangeRestaurantComment}
         onChangeRestaurantCuisine={onChangeRestaurantCuisine}
         handleCloseDialog={handleCloseDialog}
         handleAddRestaurant={handleAddRestaurant}
