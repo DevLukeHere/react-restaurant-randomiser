@@ -30,7 +30,6 @@ function RestaurantFormField(props) {
           />
           <TextField
             autoFocus
-            required
             margin="dense"
             id="restaurant-cuisine-field"
             label="Cuisine Type"
@@ -40,7 +39,6 @@ function RestaurantFormField(props) {
           />
           <TextField
             autoFocus
-            required
             margin="dense"
             id="restaurant-location-field"
             label="Location"
@@ -50,7 +48,6 @@ function RestaurantFormField(props) {
           />
           <TextField
             autoFocus
-            required
             margin="dense"
             id="restaurant-rating-field"
             label="Comments"
@@ -61,7 +58,12 @@ function RestaurantFormField(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={props.handleCloseDialog}>Cancel</Button>
-          <Button onClick={props.handleAddRestaurant}>Add</Button>
+          <Button
+            onClick={props.handleAddRestaurant}
+            disabled={props.disableAddButton}
+          >
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
