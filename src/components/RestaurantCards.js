@@ -8,13 +8,11 @@ import {
 } from "@mui/material";
 
 function RestaurantCards(props) {
-
   return (
     <>
-      {props.restaurants.map((restaurant) => (
+      {props.restaurants.map((restaurant, index) => (
         <Card key={restaurant.id} style={{ marginBottom: "1rem" }}>
           <CardContent>
-            <Typography variant="subtitle1">ID: {restaurant.id}</Typography>
             <Typography variant="subtitle1">Name: {restaurant.name}</Typography>
             <Typography variant="subtitle1">
               Cuisine: {restaurant.cuisine}
@@ -26,7 +24,11 @@ function RestaurantCards(props) {
               Comments: {restaurant.comment}
             </Typography>
             <CardActions>
-              <Button>remove restaurant</Button>
+              <Button
+                onClick={() => props.handleRemoveRestaurant(index)}
+              >
+                remove restaurant
+              </Button>
             </CardActions>
           </CardContent>
         </Card>

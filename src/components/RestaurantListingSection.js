@@ -2,14 +2,10 @@ import React, { Fragment, useState } from "react";
 import { Button, Grid } from "@mui/material";
 import RestaurantCards from "./RestaurantCards";
 import RestaurantFormField from "./RestaurantFormField";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 function RestaurantListingSection() {
   const [openDialog, setOpenDialog] = useState(false);
-  const [restaurantName, setRestaurantName] = useState("");
-  const [restaurantCuisine, setRestaurantCuisine] = useState("");
-  const [restaurantLocation, setRestaurantLocation] = useState("");
-  const [restaurantComment, setRestaurantComment] = useState("");
   const [restaurant, setRestaurant] = useState({
     id: "",
     name: "",
@@ -28,45 +24,54 @@ function RestaurantListingSection() {
   };
 
   const handleAddRestaurant = () => {
-    setRestaurants([...restaurants, restaurant])
+    setRestaurants([...restaurants, restaurant]);
     setOpenDialog(false);
+  };
+
+  const handleRandomiser = () => {
+    //
+  };
+
+  const handleRemoveRestaurant = (index) => {
+    setRestaurants((restaurants) => restaurants.filter((_, i) => i !== index));
   };
 
   const onChangeRestaurantName = (e) => {
     const name = e.target.value;
-    setRestaurant({...restaurant, name: name})
-    // setRestaurantName(name);
+    setRestaurant({ ...restaurant, name: name, id: uuidv4() });
   };
-  
+
   const onChangeRestaurantCuisine = (e) => {
     const cuisine = e.target.value;
-    setRestaurant({...restaurant, cuisine: cuisine})
-    // setRestaurantCuisine(cuisine);
+    setRestaurant({ ...restaurant, cuisine: cuisine });
   };
 
   const onChangeRestaurantLocation = (e) => {
     const location = e.target.value;
-    setRestaurant({...restaurant, location: location})
-    // setRestaurantLocation(location);
-  };
-  
-  const onChangeRestaurantComment = (e) => {
-    const comment = e.target.value;
-    setRestaurant({...restaurant, comment: comment})
-    // setRestaurantComment(comment);
+    setRestaurant({ ...restaurant, location: location });
   };
 
-  // console.log("restaurant:", restaurant)
-  // console.log("restaurants:", restaurants)
+  const onChangeRestaurantComment = (e) => {
+    const comment = e.target.value;
+    setRestaurant({ ...restaurant, comment: comment });
+  };
 
   return (
     <Fragment>
-      <Grid container justifyContent="center">
-        <Button variant="outlined" onClick={handleOpenDialog}>
-          add restaurant
-        </Button>
+      <Grid container justifyContent="center" columnSpacing={3} style={{ margin: "1rem 0" }}>
+        <Grid item>
+          <Button variant="outlined" onClick={handleOpenDialog}>
+            add restaurant
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button variant="outlined" onClick={handleRandomiser}>help me pick</Button>
+        </Grid>
       </Grid>
-      <RestaurantCards restaurants={restaurants} />
+      <RestaurantCards
+        restaurants={restaurants}
+        handleRemoveRestaurant={handleRemoveRestaurant}
+      />
       <RestaurantFormField
         openDialog={openDialog}
         onChangeRestaurantName={onChangeRestaurantName}
