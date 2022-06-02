@@ -7,23 +7,23 @@ import {
   Typography,
 } from "@mui/material";
 
-function RestaurantCards() {
+function RestaurantCards(props) {
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="subtitle1">
-          Name: Village Park Nasi Lemak
-        </Typography>
-        <Typography variant="subtitle1">Business: </Typography>
-        <Typography variant="subtitle1">
-          Address: 23, Jalan 22/5a, Damansara Utama
-        </Typography>
-        <Typography variant="subtitle1">Rating: 7/10</Typography>
-        <CardActions>
-          <Button>remove restaurant</Button>
-        </CardActions>
-      </CardContent>
-    </Card>
+    <>
+      {props.restaurants.map((restaurant) => (
+        <Card key={restaurant.id}>
+          <CardContent>
+            <Typography variant="subtitle1">Name:{" "}{restaurant.name}</Typography>
+            <Typography variant="subtitle1">Cuisine:{" "}{restaurant.cuisine}</Typography>
+            <Typography variant="subtitle1">Location:{" "}{restaurant.location}</Typography>
+            <Typography variant="subtitle1">Comments:{" "}{restaurant.comment}</Typography>
+            <CardActions>
+              <Button>remove restaurant</Button>
+            </CardActions>
+          </CardContent>
+        </Card>
+      ))}
+    </>
   );
 }
 

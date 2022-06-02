@@ -2,13 +2,38 @@ import React, { Fragment, useState } from "react";
 import { Button, Grid } from "@mui/material";
 import RestaurantCards from "./RestaurantCards";
 import RestaurantFormField from "./RestaurantFormField";
+import { useId } from "react-id-generator";
 
 function RestaurantListingSection() {
+  const [restaurantId] = useId();
   const [openDialog, setOpenDialog] = useState(false);
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurantCuisine, setRestaurantCuisine] = useState("");
   const [restaurantLocation, setRestaurantLocation] = useState("");
   const [restaurantComment, setRestaurantComment] = useState("");
+  const [restaurants, setRestaurants] = useState([
+    {
+      id: restaurantId,
+      name: "Restaurant A",
+      cuisine: "Western",
+      location: "Damansara Utama",
+      comment: "A bit pricey.",
+    },
+    {
+      id: restaurantId,
+      name: "Restaurant B",
+      cuisine: "Japanese",
+      location: "Bandar Utama",
+      comment: "Portion too small.",
+    },
+    {
+      id: restaurantId,
+      name: "Restaurant C",
+      cuisine: "Malay",
+      location: "TTDI",
+      comment: "Not much variety.",
+    },
+  ]);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -49,7 +74,7 @@ function RestaurantListingSection() {
           add restaurant
         </Button>
       </Grid>
-      <RestaurantCards />
+      <RestaurantCards restaurants={restaurants} />
       <RestaurantFormField
         openDialog={openDialog}
         onChangeRestaurantName={onChangeRestaurantName}
