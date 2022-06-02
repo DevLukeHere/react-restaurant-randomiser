@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from "react";
-import { Button, Grid } from "@mui/material";
+import React, { Fragment, useState, useEffect } from "react";
+import { Button, Grid, Typography } from "@mui/material";
 import RestaurantCards from "./RestaurantCards";
 import RestaurantFormField from "./RestaurantFormField";
 import { v4 as uuidv4 } from "uuid";
@@ -14,6 +14,25 @@ function RestaurantListingSection() {
     comment: "",
   });
   const [restaurants, setRestaurants] = useState([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState({});
+  const [disableAddButton, setDisableAddButton] = useState(true);
+  const [finishPlaying, setFinishPlaying] = useState(false);
+
+  useEffect(() => {
+    if (restaurant["name"] > 0) {
+      setDisableAddButton(false);
+    } else {
+      setDisableAddButton(true);
+    }
+  }, [restaurants]);
+
+  const formValidation = (name) => {
+    if (name.length > 0) {
+      setDisableAddButton(false);
+    } else {
+      setDisableAddButton(true);
+    }
+  };
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -21,15 +40,34 @@ function RestaurantListingSection() {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    setRestaurant({
+      ...restaurant,
+      id: "",
+      name: "",
+      cuisine: "",
+      location: "",
+      comment: "",
+    });
   };
 
   const handleAddRestaurant = () => {
     setRestaurants([...restaurants, restaurant]);
+    setRestaurant({
+      ...restaurant,
+      id: "",
+      name: "",
+      cuisine: "",
+      location: "",
+      comment: "",
+    });
     setOpenDialog(false);
   };
 
   const handleRandomiser = () => {
-    //
+    setFinishPlaying(true);
+    setSelectedRestaurant(
+      restaurants[Math.floor(Math.random() * restaurants.length)]
+    );
   };
 
   const handleRemoveRestaurant = (index) => {
@@ -38,6 +76,7 @@ function RestaurantListingSection() {
 
   const onChangeRestaurantName = (e) => {
     const name = e.target.value;
+    formValidation(name);
     setRestaurant({ ...restaurant, name: name, id: uuidv4() });
   };
 
@@ -56,24 +95,53 @@ function RestaurantListingSection() {
     setRestaurant({ ...restaurant, comment: comment });
   };
 
+  const handleRestart = (e) => {
+    setRestaurants([]);
+    setFinishPlaying(false);
+    setSelectedRestaurant({});
+  };
+
   return (
     <Fragment>
-      <Grid container justifyContent="center" columnSpacing={3} style={{ margin: "1rem 0" }}>
-        <Grid item>
-          <Button variant="outlined" onClick={handleOpenDialog}>
-            add restaurant
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button variant="outlined" onClick={handleRandomiser}>help me pick</Button>
-        </Grid>
+      <Grid container justifyContent="center" style={{ margin: "1rem 0" }}>
+        {!finishPlaying && (
+          <Grid item style={{ marginRight: "1rem" }}>
+            <Button variant="outlined" onClick={handleOpenDialog}>
+              add restaurant
+            </Button>
+          </Grid>
+        )}
+        {restaurants.length > 1 && !finishPlaying ? (
+          <Grid item>
+            <Button variant="contained" onClick={handleRandomiser}>
+              help me pick
+            </Button>
+          </Grid>
+        ) : null}
+        {finishPlaying && (
+          <Grid item>
+            <Button variant="contained" onClick={handleRestart}>
+              play again
+            </Button>
+          </Grid>
+        )}
+      </Grid>
+      <Grid style={{ margin: "1rem 0", textAlign: "center" }}>
+        {Object.keys(selectedRestaurant).length !== 0 ? (
+          <Typography variant="h4" color="primary">
+            Congratulations! Let's go to {selectedRestaurant.name}
+          </Typography>
+        ) : null}
       </Grid>
       <RestaurantCards
         restaurants={restaurants}
         handleRemoveRestaurant={handleRemoveRestaurant}
+        finishPlaying={finishPlaying}
       />
       <RestaurantFormField
         openDialog={openDialog}
+        formValidation={formValidation}
+        disableAddButton={disableAddButton}
         onChangeRestaurantName={onChangeRestaurantName}
         onChangeRestaurantLocation={onChangeRestaurantLocation}
         onChangeRestaurantComment={onChangeRestaurantComment}
