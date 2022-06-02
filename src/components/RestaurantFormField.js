@@ -56,7 +56,7 @@ function RestaurantFormField(props) {
             label="Comments"
             fullWidth
             variant="filled"
-            onChange={props.onChangeRestauranComment}
+            onChange={props.onChangeRestaurantComment}
           />
         </DialogContent>
         <DialogActions>
